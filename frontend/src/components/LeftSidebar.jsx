@@ -73,7 +73,7 @@ export default function LeftSidebar({profile}) {
               <div className="flex mt-2 justify-between items-center space-x-3">
                 <h3 className="truncate text-sm font-medium ">Follower</h3>
                 <span className="inline-flex shrink-0 items-center rounded-full  px-1.5 py-0.5 text-xs font-medium text-green-500 inset-ring inset-ring-green-500/10">
-                  5345
+                  {profile.total_followers}
                 </span>
               </div>
       </div>

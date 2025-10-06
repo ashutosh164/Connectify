@@ -13,7 +13,7 @@ class Profiles(models.Model):
     image = models.ImageField(default='user.png')
     mob = models.CharField(max_length=10, blank=True)
     post = models.ForeignKey(Posts, on_delete=models.DO_NOTHING, null=True, blank=True)
-    following = models.ManyToManyField(User, related_name='following', blank=True)
+    following = models.ManyToManyField(User,related_name='following', blank=True)
     role = models.CharField(max_length=255, blank=True, null=True)
     company = models.CharField(max_length=255, blank=True, null=True)
     about = models.TextField(blank=True, null=True)

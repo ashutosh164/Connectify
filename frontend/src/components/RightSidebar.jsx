@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
 import api from "../api";
+import { useAuth } from "../AuthContext";
 
 export default function RightSidebar() {
-  const [profile, setProfile] = useState([]);
-  const [status, setStatus] = useState({}); // { id: 'idle' | 'loading' | 'Pending' }
+    const { user } = useAuth();
+    const [profile, setProfile] = useState([]);
+    const [status, setStatus] = useState({}); // { id: 'idle' | 'loading' | 'Pending' }
 
   useEffect(() => {
-    api.get("/profiles/")
+    api.get("/profiles/",{
+      headers: { "Content-Type": "multipart/form-data", Authorization: `Token ${user.token}` },
+    })
       .then((res) => {
         console.log(res);
         setProfile(res.data.results);
@@ -19,14 +23,27 @@ export default function RightSidebar() {
 
     try {
       // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      // await new Promise((resolve) => setTimeout(resolve, 1500));
+      await api.post("/follow/", { profile_id: id },{
+      headers: { "Content-Type": "multipart/form-data", Authorization: `Token ${user.token}` },
+    })
+  .then(res => {
+    console.log('follow===>>>>>>',res)
+    if (res.data.action === 'unfollowed') {
+      console.log("Now following", res.data.following);
+            setStatus((prev) => ({ ...prev, [id]: "Follow" }));
 
-      setStatus((prev) => ({ ...prev, [id]: "Pending" }));
+    } else if(res.data.action === 'followed') {
+      console.log("Unfollowed", res.data.following);
+      setStatus((prev) => ({ ...prev, [id]: "Connected" }));
+
+    }
+  });
     } catch (err) {
       console.error("Error sending connection:", err);
-      setStatus((prev) => ({ ...prev, [id]: "idle" }));
     }
   };
+
 
   return (
     <div>
@@ -48,16 +65,16 @@ export default function RightSidebar() {
           <div className="flex items-center space-x-2">
             {status[person.id] === "loading" ? (
               <div className="w-6 h-6 border-4 border-green-500 border-dashed rounded-full animate-spin"></div>
-            ) : status[person.id] === "Pending" ? (
+            ) : status[person.id] === "Connected" ? (
               <span className="px-3 py-1 rounded-full bg-green-500/10 text-green-500 text-xs font-medium">
-                Pending
+                Connected
               </span>
             ) : (
               <span
                 onClick={() => sendConnection(person.id)}
                 className="px-3 py-1 rounded-full bg-green-500/10 text-green-500 text-xs font-medium cursor-pointer hover:bg-green-500/20"
               >
-                Connect
+                {person.is_following?'Connected':'Connect'}
               </span>
             )}
           </div>
