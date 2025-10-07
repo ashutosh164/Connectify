@@ -47,5 +47,29 @@ class AddExperience(models.Model):
     profile = models.ForeignKey(Profiles, on_delete=models.CASCADE)
 
 
+STATUS_CHOICES = (
+    ('send', 'send'),
+    ('accepted','accepted')
+)
+
+
+class RelationshipManager(models.Model):
+    def invatations_received(self,receiver):
+        qs = Relationship.objects.filter(receiver=receiver,status='send')
+        return qs
+
+
+class Relationship(models.Model):
+    sender = models.ForeignKey(Profiles,on_delete=models.CASCADE,related_name='sender')
+    receiver = models.ForeignKey(Profiles, on_delete=models.CASCADE, related_name='receiver')
+    status = models.CharField(max_length=10 ,choices=STATUS_CHOICES)
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    objs = RelationshipManager()
+
+    def __str__(self):
+        return f"{self.sender}-{self.receiver}-{self.status}"
+
 
 

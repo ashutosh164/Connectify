@@ -2,7 +2,6 @@ import LeftSidebar from "./LeftSidebar";
 import Feed from "./Feed";
 import RightSidebar from "./RightSidebar";
 import Header from "./Header";
-import AddPostModal from '../components/postModal'
 import { useAuth } from "../AuthContext";
 import api from "../api"
 import { useEffect, useState } from 'react';
