@@ -1,21 +1,18 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework import viewsets, status
-from .models import Profiles
-from .serializers import ProfileSerializer
+
 from rest_framework.decorators import action
 from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+
 from .serializers import *
 from rest_framework.authentication import TokenAuthentication
-
-
-
-# profiles/views.py
-from rest_framework import generics, permissions
+from .models import *
+from .serializers import ProfileSerializer
+from rest_framework import status
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .models import Profiles
-from .serializers import ProfileSerializer
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
@@ -33,36 +30,47 @@ class ProfileViewSet(viewsets.ModelViewSet):
         except Profiles.DoesNotExist:
             return Response({"error": "Profile not found"}, status=404)
 
-
-class CurrentUserProfileView(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        try:
-            profile = Profiles.objects.get(user=request.user)
-        except Profiles.DoesNotExist:
-            return Response({"error": "Profile not found"}, status=404)
-
-        serializer = CurrentUserProfileSerializer(profile, context={"request": request})
+    @action(detail=False, methods=["get"], url_path="exclude-me")
+    def exclude_me(self, request):
+        queryset = self.queryset.exclude(user=request.user)
+        serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
 
+# class CurrentUserProfileView(APIView):
+#     authentication_classes = [TokenAuthentication]
+#     permission_classes = [IsAuthenticated]
+#
+#     def get(self, request):
+#         profile = Profiles.objects.filter(user=request.user).first()
+#         if not profile:
+#             return Response({"error": "Profile not found"}, status=204)
+#         serializer = CurrentUserProfileSerializer(profile, context={"request": request})
+#         return Response(serializer.data)
+#
+#
+# class ProfileListWithoutCurrentUserView(APIView):
+#     authentication_classes = [TokenAuthentication]
+#     permission_classes = [IsAuthenticated]
+#
+#     def get(self, request):
+#         print('me======')
+#         try:
+#             profiles = Profiles.objects.exclude(user=request.user)
+#             serializer = CurrentUserProfileSerializer(
+#                 profiles, many=True, context={"request": request}
+#             )
+#             return Response(serializer.data, status=status.HTTP_200_OK)
+#         except Exception as ex:
+#             return Response({'success':f'{ex}'}, status=status.HTTP_204_NO_CONTENT)
 
-from rest_framework import status
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from .models import Profiles
-from django.contrib.auth.models import User
+
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def follow_unfollow_profile(request):
-    """Toggle follow/unfollow a profile."""
     user = request.user
-    print('request===>>', request.data)
     profile_id = request.data.get('profile_id')
 
     if not profile_id:
@@ -78,7 +86,6 @@ def follow_unfollow_profile(request):
 
     my_profile, _ = Profiles.objects.get_or_create(user=user)
 
-    # ✅ Check if already following
     is_following = my_profile.following.filter(id=target_profile.user.id).exists()
 
     if is_following:
@@ -96,3 +103,52 @@ def follow_unfollow_profile(request):
         'message': message,
         'follower_count': my_profile.following.count(),
     }, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def send_invitation(request):
+    try:
+        user = request.user
+        profile_id = request.data.get('profile_id')
+        sender = Profiles.objects.get(user=user)
+        receiver = Profiles.objects.get(id=profile_id)
+        relation = Relationship.objects.create(sender=sender, receiver=receiver, status='send')
+        return Response({'status': 'success',}, status=status.HTTP_200_OK)
+    except Exception as ex:
+        return Response({'error': f'{ex}', }, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def accept_invitation(request):
+    try:
+        user = request.user
+        profile_id = request.data.get('profile_id')
+        receiver = Profiles.objects.get(user=user)
+        sender = Profiles.objects.get(id=profile_id)
+        relation = get_object_or_404(Relationship, sender=sender, receiver=receiver)
+        if relation.status == 'send':
+            relation.status = 'accepted'
+            relation.save()
+            return Response({'status': 'success', }, status=status.HTTP_200_OK)
+    except Exception as ex:
+        return Response({'error': f'{ex}', }, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def reject_invitation(request):
+    try:
+        user = request.user
+        profile_id = request.data.get('profile_id')
+        sender = Profiles.objects.get(id=profile_id)
+        receiver = Profiles.objects.get(user=user)
+        relation = get_object_or_404(Relationship, sender=sender, receiver=receiver)
+        relation.delete()
+        return Response({'status': 'success', }, status=status.HTTP_200_OK)
+    except Exception as ex:
+        return Response({'error': f'{ex}', }, status=status.HTTP_400_BAD_REQUEST)
+
+

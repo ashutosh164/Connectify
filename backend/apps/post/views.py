@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate
 from django.shortcuts import render
+from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
 from .models import Posts
@@ -27,18 +28,23 @@ class PostView(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-    # def get_queryset(self):
-    #     # Return all posts (not filtered)
-    #     return Posts.objects.all().order_by('-created_on')
+    @action(detail=True, methods=["post"])
+    def repost(self, request, pk=None):
+        post = self.get_object()
+        repost = Posts.objects.create(
+            title=post.title,
+            image=post.image,
+            author=request.user,
+            is_repost=True,
+            original_post=post
+        )
+        serializer = PostSerializer(repost, context={"request": request})
+        total_repost = Posts.objects.filter(original_post=post).count()
+        return Response({
+            "repost_post": serializer.data,  # the new post object
+            "total_repost": total_repost
+        }, status=status.HTTP_201_CREATED)
 
-
-
-    # def get_queryset(self):
-        # queryset = super(PostView, self).get_queryset()
-        # return self.request.user
-    # def get_queryset(self):
-    #     user = self.request.user
-    #     return Posts.objects.filter(user=user)  # maybe user has fewer posts
 
 
 class RegisterView(viewsets.ModelViewSet):
@@ -136,6 +142,12 @@ class CommentView(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 

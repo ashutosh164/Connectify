@@ -1,7 +1,7 @@
 from tkinter.font import names
 
 from rest_framework import routers
-from apps.account import views
+from ..account import views
 from django.urls import path, include
 from rest_framework.authtoken.views import obtain_auth_token
 
@@ -11,8 +11,10 @@ router.register('profiles', views.ProfileViewSet, basename='profiles')
 
 urlpatterns = [
     path('', include(router.urls)),
-    path("me/", views.CurrentUserProfileView.as_view(), name="current-user"),
+    # path("my_profile/", views.CurrentUserProfileView.as_view(), name="current-user"),
     path('follow/', views.follow_unfollow_profile, name='follow'),
+    path('send-invite/', views.send_invitation, name='send_invitations'),
+    # path("profiles/exclude-me/", views.ProfileListWithoutCurrentUserView.as_view(), name="profile-list-exclude-me"),
 
 ]
 

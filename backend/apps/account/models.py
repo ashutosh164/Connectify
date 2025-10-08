@@ -60,12 +60,12 @@ class RelationshipManager(models.Model):
 
 
 class Relationship(models.Model):
+    objects = models.Manager()
     sender = models.ForeignKey(Profiles,on_delete=models.CASCADE,related_name='sender')
     receiver = models.ForeignKey(Profiles, on_delete=models.CASCADE, related_name='receiver')
     status = models.CharField(max_length=10 ,choices=STATUS_CHOICES)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
-
     objs = RelationshipManager()
 
     def __str__(self):

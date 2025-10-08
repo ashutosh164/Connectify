@@ -52,6 +52,13 @@ export default function Feed({profile}) {
     fetchPosts(1, false);
   }, []);
 
+
+  const handleAddRepost = (newPost) => {
+  setPosts((prevPosts) => [newPost, ...prevPosts]);
+};
+
+
+
   // Scroll handler (stable with useCallback)
   const handleScroll = useCallback(() => {
     const div = feedContainerRef.current;
@@ -74,6 +81,9 @@ export default function Feed({profile}) {
     return () => div.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
+
+  
+
   return (
     <div className="flex-1 p-4 overflow-y-auto" ref={feedContainerRef} style={{ maxHeight: "calc(100vh - 56px)" }}>
       {/* Create Post Section */}
@@ -81,7 +91,8 @@ export default function Feed({profile}) {
 
       {/* Posts Feed */}
       {posts.map((post) => (
-        <Post profile={profile} key={post.id} post={post} user={user} pageNum={page}
+        <Post   handleAddRepost={handleAddRepost}
+ setPosts={setPosts} profile={profile} key={post.id} post={post} user={user} pageNum={page}
           // fetchPosts={() => fetchPosts(page, false)}
           fetchPosts={fetchPosts}/>))}
 

@@ -5,21 +5,26 @@ import Header from "./Header";
 import { useAuth } from "../AuthContext";
 import api from "../api"
 import { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 
 
 export default function Layout() {
   const [profile, setProfile] = useState([]);
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    api.get("/me/", {
+    api.get("/profiles/me/", {
       headers: { "Content-Type": "multipart/form-data", Authorization: `Token ${user.token}` },
     })
       .then((res) =>{
          setProfile(res.data)
          console.log('me===>>', res.data)
       })
-      .catch((err) => console.error("Error fetching posts:", err));
+      .catch((err) =>{
+         console.error("Error fetching posts:", err)
+         navigate('/login')
+      });
   }, []);
 
 

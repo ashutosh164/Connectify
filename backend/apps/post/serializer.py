@@ -78,22 +78,29 @@ class CommentPagination(PageNumberPagination):
     page_size = 3  # comments per page
 
 class CommentSerializer(serializers.ModelSerializer):
-    user_name = serializers.CharField(source='author.username', read_only=True, required=False)
+    user_name = serializers.CharField(source='user.username', read_only=True, required=False)
     profile_image = serializers.SerializerMethodField()
-
+    user_role = serializers.SerializerMethodField()
 
     def get_profile_image(self, obj):
-        request = self.context.get("request")  # to build absolute URL
-        if hasattr(obj.user, "profiles") and obj.user.profiles.image:
-            image_url = obj.user.profiles.image.url
+        request = self.context.get("request")
+        profile = getattr(obj.user, "profiles", None)  # safer
+        if profile and profile.image:
+            image_url = profile.image.url
             if request is not None:
-                return request.build_absolute_uri(image_url)  # full URL
+                return request.build_absolute_uri(image_url)
             return image_url
+        return None
+
+    def get_user_role(self, obj):
+        profile = getattr(obj.user, "profiles", None)
+        if profile and profile.role:
+            return profile.role
         return None
 
     class Meta:
         model = Comment
-        fields = ['id','post', 'body', 'updated_on', 'created_on', 'user_name', 'profile_image']
+        fields = ['id','post', 'body', 'updated_on', 'created_on', 'user_name', 'profile_image', 'user_role', 'user']
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -160,7 +167,7 @@ class PostSerializer(serializers.ModelSerializer):
                   'author', 'created_on','updated_on',
                    'user_commented', 'comments',
                   'cehck_current_user_like_the_post','total_comment',
-                  'total_like','check_user_like_post','user_name']
+                  'total_like','check_user_like_post','user_name', 'total_repost']
 
 
 
