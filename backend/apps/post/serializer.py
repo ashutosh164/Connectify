@@ -23,47 +23,70 @@ class RegisterSerializer(serializers.ModelSerializer):
         return user
 
 
-class LikeSerializer(serializers.ModelSerializer):
+# class LikeSerializer(serializers.ModelSerializer):
+#
+#     class Meta:
+#         model = Like
+#         fields = '__all__'
+#
+#     def create(self, validated_data):
+#         # data = validated_data.get('user')
+#         # user = self.context['request'].user
+#         user = validated_data.get('user')
+#         post = validated_data.get('post')
+#         if user in post.liked.all():
+#             post.liked.remove(user)
+#         else:
+#             post.liked.add(user)
+#         like, created = Like.objects.get_or_create(**validated_data)
+#         if not created:
+#             if like.value == 'Like':
+#                 like.value = 'Unlike'
+#             else:
+#                 like.value = 'Like'
+#         like.save()
+#         return like
+#
+#         # post_obj = Posts.objects.get(title=post)
+#         # print(post_obj.id)
+#         # filter_post_in_like = Like.objects.filter(Q(post_id=post.id) & Q(user_id=user.id)).values('value').exists()
+#         # print(filter_post_in_like)
+#         # print(post.liked.all())
+#         # if filter_post_in_like:
+#         #     print('yes baby')
+#         #     Like.objects.get(user_id=user.id).delete()
+#
+#         # like, created = Like.objects.get_or_create(**validated_data)
+#         # if not created:
+#         #     if like.value == 'Like':
+#         #         like.value = 'Unlike'
+#         #     else:
+#         #         like.value = 'Like'
+#         # like.save()
+#         # return like
 
+
+class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
         fields = '__all__'
 
     def create(self, validated_data):
-        # data = validated_data.get('user')
-        # user = self.context['request'].user
         user = validated_data.get('user')
         post = validated_data.get('post')
-        if user in post.liked.all():
+
+        existing_like = Like.objects.filter(user=user, post=post).first()
+
+        if existing_like:
+            # User clicked "unlike" → remove from M2M and delete the Like instance
             post.liked.remove(user)
-        else:
-            post.liked.add(user)
-        like, created = Like.objects.get_or_create(**validated_data)
-        if not created:
-            if like.value == 'Like':
-                like.value = 'Unlike'
-            else:
-                like.value = 'Like'
-        like.save()
+            existing_like.delete()
+            return existing_like  # Return the deleted instance (DRF accepts this)
+
+        # Otherwise, create a new Like
+        like = Like.objects.create(**validated_data)
+        post.liked.add(user)
         return like
-
-        # post_obj = Posts.objects.get(title=post)
-        # print(post_obj.id)
-        # filter_post_in_like = Like.objects.filter(Q(post_id=post.id) & Q(user_id=user.id)).values('value').exists()
-        # print(filter_post_in_like)
-        # print(post.liked.all())
-        # if filter_post_in_like:
-        #     print('yes baby')
-        #     Like.objects.get(user_id=user.id).delete()
-
-        # like, created = Like.objects.get_or_create(**validated_data)
-        # if not created:
-        #     if like.value == 'Like':
-        #         like.value = 'Unlike'
-        #     else:
-        #         like.value = 'Like'
-        # like.save()
-        # return like
 
 
 # class ProfileSerializer(serializers.ModelSerializer):
@@ -167,7 +190,7 @@ class PostSerializer(serializers.ModelSerializer):
                   'author', 'created_on','updated_on',
                    'user_commented', 'comments',
                   'cehck_current_user_like_the_post','total_comment',
-                  'total_like','check_user_like_post','user_name', 'total_repost']
+                  'total_like','check_user_like_post','user_name', 'total_repost','is_repost']
 
 
 

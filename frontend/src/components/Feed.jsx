@@ -13,6 +13,29 @@ export default function Feed({profile}) {
 
   const feedContainerRef = useRef(null);
 
+  // Fetch paginated posts
+  // const fetchPosts = async (pageNum = 1, append = false) => {
+  //   if (loading) return; // block duplicate requests
+  //   setLoading(true);
+
+  //   try {
+  //     const res = await api.get(`/posts/?page=${pageNum}`, {
+  //       headers: { Authorization: `Token ${user.token}` },
+  //     });
+
+  //     const newPosts = res.data.results || [];
+
+  //     setPosts(prev =>
+  //       append ? [...prev, ...newPosts] : newPosts
+  //     );
+
+  //     setHasMore(Boolean(res.data.next));
+  //   } catch (err) {
+  //     console.error("Error fetching posts:", err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   const fetchPosts = async (pageNum = 1, append = false, fetchAll = false) => {
   if (loading) return;
@@ -27,6 +50,7 @@ export default function Feed({profile}) {
       response = await api.get(url, {
         headers: { Authorization: `Token ${user.token}` },
       });
+  
       const newPosts = response.data.results || [];
       allPosts = [...allPosts, ...newPosts];
       url = fetchAll && response.data.next ? response.data.next : null;
@@ -46,18 +70,17 @@ export default function Feed({profile}) {
   }
 };
 
+  // Update a single post in state
+  // const updatePost = (updatedPost) => {
+  //   setPosts(prevPosts =>
+  //     prevPosts.map(p => (p.id === updatedPost.id ? updatedPost : p))
+  //   );
+  // };
 
   // Initial fetch
   useEffect(() => {
     fetchPosts(1, false);
   }, []);
-
-
-  const handleAddRepost = (newPost) => {
-  setPosts((prevPosts) => [newPost, ...prevPosts]);
-};
-
-
 
   // Scroll handler (stable with useCallback)
   const handleScroll = useCallback(() => {
@@ -81,9 +104,6 @@ export default function Feed({profile}) {
     return () => div.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
-
-  
-
   return (
     <div className="flex-1 p-4 overflow-y-auto" ref={feedContainerRef} style={{ maxHeight: "calc(100vh - 56px)" }}>
       {/* Create Post Section */}
@@ -91,8 +111,7 @@ export default function Feed({profile}) {
 
       {/* Posts Feed */}
       {posts.map((post) => (
-        <Post   handleAddRepost={handleAddRepost}
- setPosts={setPosts} profile={profile} key={post.id} post={post} user={user} pageNum={page}
+        <Post profile={profile} key={post.id} post={post} user={user} pageNum={page}
           // fetchPosts={() => fetchPosts(page, false)}
           fetchPosts={fetchPosts}/>))}
 

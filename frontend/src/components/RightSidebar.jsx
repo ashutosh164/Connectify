@@ -12,7 +12,7 @@ export default function RightSidebar() {
       headers: { "Content-Type": "multipart/form-data", Authorization: `Token ${user.token}` },
     })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setProfile(res.data.results);
       })
       .catch((err) => console.error("Error fetching profiles:", err));
