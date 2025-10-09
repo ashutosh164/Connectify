@@ -105,7 +105,7 @@ export default function Feed({profile}) {
   }, [handleScroll]);
 
   return (
-    <div className="flex-1 p-4 overflow-y-auto" ref={feedContainerRef} style={{ maxHeight: "calc(100vh - 56px)" }}>
+    <div className="flex-1 p-4 overflow-y-auto custom-scrollbar" ref={feedContainerRef} style={{ maxHeight: "calc(100vh - 56px)" }}>
       {/* Create Post Section */}
       <CreatePost profile={profile} user={user} onPostCreated={() => fetchPosts(page, false)} />
 

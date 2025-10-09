@@ -1,2 +1,42 @@
 
 @import "tailwindcss";
+/* Custom Scrollbar Style */
+.custom-scrollbar {
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+  overflow-y: auto;
+}
+
+/* Chrome, Edge, Safari */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  transition: opacity 0.3s ease;
+}
+
+/* Hide scrollbar by default */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  opacity: 0;
+}
+
+/* Show scrollbar when scrolling or hover */
+.custom-scrollbar:hover::-webkit-scrollbar-thumb,
+.custom-scrollbar:active::-webkit-scrollbar-thumb {
+  opacity: 1;
+}
+
+/* Completely hide track background */
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.custom-scrollbar:active::-webkit-scrollbar-thumb {
+  opacity: 1;
+}

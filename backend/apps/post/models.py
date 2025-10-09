@@ -49,7 +49,6 @@ class Like(models.Model):
             models.Index(fields=['user', 'post']),
             models.Index(fields=['post', 'value']),
         ]
-        unique_together = ('user', 'post')
 
 
 class Comment(models.Model):

@@ -35,7 +35,7 @@ export default function Layout() {
       <Header />
 
       {/* Body */}
-      <div className="flex flex-1 pt-14 gap-3">
+      <div className="flex flex-1 pt-14 gap-3 bg-green-500/10">
         {/* Left Sidebar */}
         <div className="w-1/4 p-4 hidden sm:block">
           <div className="fixed w-1/4">
@@ -52,7 +52,7 @@ export default function Layout() {
 
         {/* Right Sidebar (hidden on small screens) */}
         <div className="w-1/4 p-4 hidden md:block">
-          <div className="fixed right-0 w-1/4">
+          <div className="fixed right-3 w-1/4">
             <RightSidebar />
           </div>
         </div>
