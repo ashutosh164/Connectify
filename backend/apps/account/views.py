@@ -158,3 +158,13 @@ def reject_invitation(request):
         return Response({'error': f'{ex}', }, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def invite_profile_list_view(request):
+    user = request.user
+    qs = Profiles.objects.get_all_profiles_to_invite(user)
+    serializer = ProfileSerializer(qs, many=True, context={'request': request})
+
+    return Response( serializer.data, status=status.HTTP_200_OK)
+
+

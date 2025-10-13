@@ -18,16 +18,54 @@ export default function RightSidebar() {
       .catch((err) => console.error("Error fetching profiles:", err));
   }, []);
 
+  // const sendConnection = async (id) => {
+  //   setStatus((prev) => ({ ...prev, [id]: "loading" }));
+
+  //   try {
+  //     // await api.post("/send-invite/", { profile_id: id },{
+
+  //     await api.post("/follow/", { profile_id: id },{
+  //     headers: { "Content-Type": "multipart/form-data", Authorization: `Token ${user.token}` },
+  //   })
+  // .then(res => {
+  //   if (res.data.action === 'unfollowed') {
+  //       setStatus((prev) => ({ ...prev, [id]: "Connect" }));
+  //       console.log('unfollowed=====>>>', status)
+
+  //   } else if(res.data.action === 'followed') {
+  //     setStatus((prev) => ({ ...prev, [id]: "Connected" }));
+  //     console.log('followed=====>>>', status)
+
+
+  //   }
+  // });
+  //   } catch (err) {
+  //     console.error("Error sending connection:", err);
+  //   }
+  // };
+
+  function getInviteList() {
+     api.get("/invite_profile_list_view/",{
+      headers: { "Content-Type": "multipart/form-data", Authorization: `Token ${user.token}` },
+    })
+      .then((res) => {
+        // console.log(res);
+        console.log('invite_profile_list_view====>>',res.data.results);
+      })
+      .catch((err) => console.error("Error fetching profiles:", err));
+  }
+
   const sendConnection = async (id) => {
     setStatus((prev) => ({ ...prev, [id]: "loading" }));
 
     try {
-      // await api.post("/send-invite/", { profile_id: id },{
+      await api.post("/send-invite/", { profile_id: id },{
 
-      await api.post("/follow/", { profile_id: id },{
       headers: { "Content-Type": "multipart/form-data", Authorization: `Token ${user.token}` },
     })
   .then(res => {
+    console.log(res)
+    getInviteList()
     if (res.data.action === 'unfollowed') {
         setStatus((prev) => ({ ...prev, [id]: "Connect" }));
         console.log('unfollowed=====>>>', status)
@@ -43,7 +81,6 @@ export default function RightSidebar() {
       console.error("Error sending connection:", err);
     }
   };
-
 
   return (
     <div>

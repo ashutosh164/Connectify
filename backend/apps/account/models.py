@@ -1,10 +1,38 @@
 from django.db import models
 from django.contrib.auth.models import User
 from ..post.models import Posts
+from django.db.models import Q
+
+
+class ProfileManager(models.Manager):
+    def get_all_profiles_to_invite(self,sender):
+        profiles = Profiles.objects.all().exclude(user=sender)
+        profile = Profiles.objects.get(user=sender)
+        qs = Relationship.objects.filter(Q(sender=profile) | Q(receiver=profile))
+        print(qs)
+        print('#############')
+        accepted = set([])
+
+        for rel in qs:
+            if rel.status == 'accepted':
+                accepted.add(rel.receiver)
+                accepted.add(rel.sender)
+        print(accepted)
+        print('#############')
+
+        available = [profile for profile in profiles if profile not in accepted]
+        print(available)
+        print('#############')
+        return available
+
+    def get_all_profiles(self, me):
+        profiles = Profiles.objects.all().exclude(user=me)
+        return profiles
+
 
 
 class Profiles(models.Model):
-    objects = models.Manager()
+    objects = ProfileManager()
     first_name = models.CharField(max_length=50, blank=True, null=True)
     last_name = models.CharField(max_length=50, blank=True, null=True)
     bio = models.CharField(max_length=250, blank=True, null=True)

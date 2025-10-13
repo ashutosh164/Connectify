@@ -3,13 +3,18 @@ import { useAuth } from "../AuthContext";
 import api from "../api";
 import Post from "./Post";
 import CreatePost from "./CreatePost";
+import { useNavigate } from "react-router-dom";
+
+
 
 export default function Feed({profile}) {
-  const { user } = useAuth();
-  const [posts, setPosts] = useState([]);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
-  const [loading, setLoading] = useState(false);
+    const { user } = useAuth();
+    const [posts, setPosts] = useState([]);
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+
 
   const feedContainerRef = useRef(null);
 
@@ -65,6 +70,7 @@ export default function Feed({profile}) {
     }
   } catch (err) {
     console.error("Error fetching posts:", err);
+    navigate("/login")
   } finally {
     setLoading(false);
   }

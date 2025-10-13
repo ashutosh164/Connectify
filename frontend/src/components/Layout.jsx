@@ -6,12 +6,15 @@ import { useAuth } from "../AuthContext";
 import api from "../api"
 import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import Network from "../pages/NetworkPage";
 
 
 export default function Layout() {
   const [profile, setProfile] = useState([]);
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [activePage, setActivePage] = useState("/"); // 'feed' | 'network'
+
 
   useEffect(() => {
     api.get("/profiles/me/", {
@@ -19,7 +22,6 @@ export default function Layout() {
     })
       .then((res) =>{
          setProfile(res.data)
-         console.log('me===>>', res.data)
       })
       .catch((err) =>{
          console.error("Error fetching posts:", err)
@@ -32,7 +34,7 @@ export default function Layout() {
   return (
     <div className="h-screen flex flex-col">
       {/* Header */}
-      <Header />
+      <Header onNavigate={setActivePage} />
 
       {/* Body */}
       <div className="flex flex-1 pt-14 gap-3 bg-green-500/10">
@@ -46,7 +48,13 @@ export default function Layout() {
         {/* Feed */}
         {/* <div className="flex-1 p-4 overflow-y-auto" style={{ maxHeight: "calc(100vh - 56px)" }}> */}
         <div className="flex-1">
-          <Feed profile={profile}/>
+          {/* <Feed profile={profile}/> */}
+
+           {activePage === "/" ? (
+            <Feed profile={profile} />
+          ) : (
+            <Network />
+          )}
           {/* <AddPostModal/> */}
         </div>
 
