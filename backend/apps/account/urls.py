@@ -17,8 +17,8 @@ urlpatterns = [
     # path("profiles/exclude-me/", views.ProfileListWithoutCurrentUserView.as_view(), name="profile-list-exclude-me"),
     path('invite-profile-list/', views.invite_profile_list_view, name='invite-list-view'),
     path('my-invite/', views.invites_received_view, name='my-invites-view'),
-
-
+    path('my-invite/reject/', views.reject_invitation, name='reject'),
+    path('my-invite/accept/', views.accept_invitation, name='accept'),
 
 ]
 

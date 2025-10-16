@@ -45,7 +45,7 @@ export default function RightSidebar() {
   // };
 
   function getInviteList() {
-     api.get("/invite_profile_list_view/",{
+     api.get("/invite-profile-list/",{
       headers: { "Content-Type": "multipart/form-data", Authorization: `Token ${user.token}` },
     })
       .then((res) => {
