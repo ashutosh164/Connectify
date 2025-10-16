@@ -1,7 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
 # from apps.account.models import Profiles
-
+STATUS_CHOICES = (
+    ('public', 'public'),
+    ('friend', 'friend'),
+    ('me', 'me'),
+)
 
 class Posts(models.Model):
     title = models.TextField(blank=True, null=True)
@@ -14,6 +18,7 @@ class Posts(models.Model):
     total_repost = models.PositiveIntegerField(default=0, db_index=True)
     is_repost = models.BooleanField(default=False, db_index=True)
     original_post = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, related_name='reposts', db_index=True)
+    status = models.CharField(choices=STATUS_CHOICES, default='public', max_length=10,  db_index=True)
 
     class Meta:
         indexes = [

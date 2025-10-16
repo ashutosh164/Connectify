@@ -7,6 +7,7 @@ import api from "../api"
 import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import Network from "../pages/NetworkPage";
+import { Routes, Route } from "react-router-dom";
 
 
 export default function Layout() {
@@ -50,11 +51,11 @@ export default function Layout() {
         <div className="flex-1">
           {/* <Feed profile={profile}/> */}
 
-           {activePage === "/" ? (
-            <Feed profile={profile} />
-          ) : (
-            <Network />
-          )}
+           {/* {activePage === "/" ? (<Feed profile={profile} />) : (<Network />)} */}
+           <Routes>
+            <Route path="/" element={<Feed profile={profile} />} />
+            <Route path="/my-network" element={<Network />} />
+          </Routes>
           {/* <AddPostModal/> */}
         </div>
 

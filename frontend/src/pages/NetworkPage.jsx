@@ -8,40 +8,43 @@ export default function Network() {
     const [profiles, setProfiles] = useState([]);
 
   useEffect(() => {
-  api.get("/invite-profile-list/",{
+      api.get("/my-invite/",{
       headers: { "Content-Type": "multipart/form-data", Authorization: `Token ${user.token}` },
     })
       .then((res) => {
         // console.log(res);
         console.log('invite_profile_list_view====>>',res);
-        setProfiles(res.data)
+        setProfiles(res.data.data)
       })
       .catch((err) => console.error("Error fetching profiles:", err));
   }, []);
 
   return (
     <div className="flex-1 p-4 overflow-y-auto custom-scrollbar" style={{ maxHeight: "calc(100vh - 56px)" }}>
-      <h2 className="text-xl font-bold text-gray-700">People You May Know</h2>
+      <h2 className="text-xl font-bold text-gray-700 mb-5">People You May Know</h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {profiles.map((profile) => (
-            <div
-              key={profile.id}
-              className="bg-white p-4 rounded-lg shadow-md text-center"
-            >
-              <img
-                src={profile.image}
-                alt={profile.first_name}
-                className="w-16 h-16 mx-auto rounded-full object-cover mb-2"
-              />
-              <h3 className="font-semibold">
-                {profile.first_name} {profile.last_name}
-              </h3>
-              <p className="text-sm text-gray-500">{profile.bio}</p>
+           {profiles && profiles.length > 0 ? (profiles.map((person) => (
+             <div key={person.id} className="relative  bg-white shadow rounded-lg flex  items-center space-x-3 border border-white/10 px-6 py-5 hover:border-white/25 mb-2">
+      <div className="shrink-0">
+        <img alt={person.full_name || person.username} src={person.image || "/default.png"} className="h-10 w-10 rounded-full" />
+      </div>
+      <div className="min-w-0 flex-1">
+        <p className="text-sm font-medium">{person.full_name || person.username}</p>
+        <p className="truncate text-sm text-gray-400">
+          {person.role || "Software developer"}
+        </p>
+      </div>
+      <div onClick={() => acceptConnection(person.id)} className="flex items-center cursor-pointer space-x-2">
+
+          <span className="px-3 py-1 rounded-full bg-green-500/10 text-green-500 text-xs font-medium cursor-pointer hover:bg-green-500/20">
+           Accept
+          </span>
+       
+      </div>
             </div>
-          ))}
+          ))) : (
+      <p className="text-center text-gray-400 py-4">No profiles found.</p>
+    )}
         </div>
       )}
-    </div>
-  );
-}
+ 

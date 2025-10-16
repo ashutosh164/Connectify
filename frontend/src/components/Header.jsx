@@ -38,7 +38,7 @@ export default function Header() {
           <span className="hidden sm:inline text-sm font-medium">Home</span>
         </Link>
 
-        <Link to="/network" className="flex items-center gap-1 text-gray-700 hover:text-green-600 transition">
+        <Link to="/my-network" className="flex items-center gap-1 text-gray-700 hover:text-green-600 transition">
           <UsersIcon className="w-6 h-6" />
           <span className="hidden sm:inline text-sm font-medium">My Network</span>
         </Link>

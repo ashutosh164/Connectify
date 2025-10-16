@@ -234,18 +234,15 @@ const handleRepost = async (postId) => {
     //   )
     // );
     setRepostCount((prev)=> prev + 1)
-isRepost(true)
+    isRepost(true)
 
     console.log("Reposted successfully");
   } catch (error) {
     console.error("Error reposting:", error);
         setRepostCount((prev) => Math.max(0, prev - 1));
-
   }
 };
 
-
- 
  
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -334,22 +331,12 @@ isRepost(true)
                   <p className="mt-1">{c.body}</p>
                   <span className="text-gray-400 text-[0.625rem]">{new Date(c.created_on).toLocaleString()}</span>
                 </div>
-               
-
+              
               </div>
             ))}
           </div>
         </div>
       )}
-
-
-
-
-
-
-
-
-
 
       
     </div>

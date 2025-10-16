@@ -168,3 +168,17 @@ def invite_profile_list_view(request):
     return Response( serializer.data, status=status.HTTP_200_OK)
 
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def invites_received_view(request):
+    profile = Profiles.objects.get(user=request.user)
+    qs = Relationship.objs.invatations_received(profile)
+    results = list(map(lambda x: x.sender,qs))
+    is_empty = False
+    if len(results) == 0:
+        is_empty = True
+    serializer = ProfileSerializer(results, many=True, context={'request': request})
+    return Response({'is_empty':is_empty, 'data': serializer.data}, status=status.HTTP_200_OK)
+
+
+

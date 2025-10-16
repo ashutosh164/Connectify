@@ -1,6 +1,6 @@
 import api from "../api"
 import { useNavigate } from "react-router-dom";
-
+import { capitalizeFirstLetter } from "../utiles/stringUtils";
 
 export default function LeftSidebar({profile}) {
 
@@ -34,7 +34,7 @@ export default function LeftSidebar({profile}) {
             <div className="flex flex-1 flex-col p-8">
               <img alt="No profile found" src={profile.image} className="mx-auto size-32 shrink-0 rounded-full bg-gray-700 outline -outline-offset-1 outline-white/10"
               />
-              <h3 className="mt-6 text-sm font-medium">{profile.username}</h3>
+              <h3 className="mt-6 text-sm font-medium">{capitalizeFirstLetter(profile.full_name?profile.full_name:profile.username)}</h3>
               <dl className="mt-1 flex grow flex-col justify-between">
                 <dt className="sr-only">Title</dt>
                 <dd className="text-sm text-gray-400">{profile.role?profile.role:'Software developer'}</dd>

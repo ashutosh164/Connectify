@@ -14,7 +14,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
 
         {/* Main app */}
-        <Route path="/" element={<Layout />} />
+        <Route path="/*" element={<Layout />} />
 
         {/* Catch-all: redirect unknown routes to home */}
         <Route path="*" element={<Navigate to="/" replace />} />
