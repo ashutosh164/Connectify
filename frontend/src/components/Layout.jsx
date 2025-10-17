@@ -8,13 +8,15 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import Network from "../pages/NetworkPage";
 import { Routes, Route } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 
 export default function Layout() {
   const [profile, setProfile] = useState([]);
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [activePage, setActivePage] = useState("/"); // 'feed' | 'network'
+  const [activePage, setActivePage] = useState("/");
+  const location = useLocation(); // track current path
 
 
   useEffect(() => {
@@ -31,35 +33,24 @@ export default function Layout() {
   }, []);
 
 
-
   return (
     <div className="h-screen flex flex-col">
-      {/* Header */}
       <Header onNavigate={setActivePage} />
 
-      {/* Body */}
       <div className="flex flex-1 pt-14 gap-3 bg-green-500/10">
-        {/* Left Sidebar */}
         <div className="w-1/4 p-4 hidden sm:block">
           <div className="fixed w-1/4">
             <LeftSidebar profile={profile} />
           </div>
         </div>
 
-        {/* Feed */}
-        {/* <div className="flex-1 p-4 overflow-y-auto" style={{ maxHeight: "calc(100vh - 56px)" }}> */}
         <div className="flex-1">
-          {/* <Feed profile={profile}/> */}
-
-           {/* {activePage === "/" ? (<Feed profile={profile} />) : (<Network />)} */}
-           <Routes>
+          <Routes>
             <Route path="/" element={<Feed profile={profile} />} />
             <Route path="/my-network" element={<Network />} />
           </Routes>
-          {/* <AddPostModal/> */}
         </div>
 
-        {/* Right Sidebar (hidden on small screens) */}
         <div className="w-1/4 p-4 hidden md:block">
           <div className="fixed right-3 w-1/4">
             <RightSidebar />
