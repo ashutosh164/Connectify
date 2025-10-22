@@ -41,7 +41,7 @@ export default function LoginPage() {
       {/* Right Section - Login Card */}
       <div className="flex-1 flex items-center justify-center">
         <div className="w-full max-w-sm bg-white shadow-md rounded-2xl p-8">
-          <h2 className="text-center text-2xl font-semibold text-indigo-600">
+          <h2 className="text-center text-2xl font-semibold text-green-500">
             Login
           </h2>
           <p className="text-center text-gray-500 text-sm mt-1">
@@ -73,7 +73,7 @@ export default function LoginPage() {
 
             <button
               type="submit"
-              className="w-full mt-4 rounded-md bg-indigo-600 text-white font-semibold py-2 hover:bg-indigo-500"
+              className="w-full mt-4 rounded-md bg-green-400 text-white font-semibold py-2 hover:bg-green-500"
             >
               Sign in
             </button>
@@ -81,7 +81,7 @@ export default function LoginPage() {
 
           <p className="text-center text-sm text-gray-500 mt-6">
             Don’t have an account?{" "}
-          <Link to="/register" className="text-indigo-600 hover:underline">
+          <Link to="/register" className="text-green-500 hover:underline">
           Sign up now
         </Link>
           </p>

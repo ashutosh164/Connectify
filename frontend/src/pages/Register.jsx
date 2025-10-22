@@ -35,7 +35,7 @@ export default function RegisterPage() {
       {/* Right Section - Login Card */}
       <div className="flex-1 flex items-center justify-center">
         <div className="w-full max-w-sm bg-white shadow-md rounded-2xl p-8">
-          <h2 className="text-center text-2xl font-semibold text-indigo-600">
+          <h2 className="text-center text-2xl font-semibold text-green-500">
             Create Account
 
           </h2>
@@ -51,7 +51,7 @@ export default function RegisterPage() {
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-green-500 focus:outline-none"
               />
             </div>
                         <div>
@@ -60,7 +60,7 @@ export default function RegisterPage() {
                 placeholder=" Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-green-500 focus:outline-none"
               />
             </div>
             <div>
@@ -69,7 +69,7 @@ export default function RegisterPage() {
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-green-500 focus:outline-none"
               />
             </div>
 
@@ -77,7 +77,7 @@ export default function RegisterPage() {
 
             <button
               type="submit"
-              className="w-full mt-4 rounded-md bg-indigo-600 text-white font-semibold py-2 hover:bg-indigo-500"
+              className="w-full mt-4 rounded-md bg-green-500 text-white font-semibold py-2 hover:bg-green-600"
             >
               Sign Up
             </button>
@@ -85,7 +85,7 @@ export default function RegisterPage() {
 
           <p className="text-center text-sm text-gray-500 mt-6">
             Have an active account?{" "}
-              <Link to="/login" className="text-indigo-600 hover:underline">
+              <Link to="/login" className="text-green-500 hover:underline">
             Sign in now
           </Link>
           </p>
