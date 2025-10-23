@@ -1,5 +1,3 @@
-from tkinter.font import names
-
 from rest_framework import routers
 from ..account import views
 from django.urls import path, include
