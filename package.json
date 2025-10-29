@@ -1,5 +1,8 @@
 {
   "dependencies": {
     "@heroicons/react": "^2.2.0"
+  },
+  "devDependencies": {
+    "rollup": "^4.21.0"
   }
 }

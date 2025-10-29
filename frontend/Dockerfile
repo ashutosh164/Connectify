@@ -1,16 +1,8 @@
-FROM node:18
-
+FROM node:20-alpine
 WORKDIR /app
-
-# Only copy package.json (since package-lock.json is missing)
-COPY package.json ./
-
-# Use npm install instead of npm ci
-RUN npm install
-
+COPY package*.json ./
+ENV ROLLUP_SKIP_NODEJS_NATIVE=1
+RUN npm install --force
 COPY . .
-
 EXPOSE 3000
-
 CMD ["npm", "run", "dev"]
-# CMD npm run dev
