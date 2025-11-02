@@ -7,6 +7,8 @@ import api from "../api"
 import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import Network from "../pages/NetworkPage";
+import MyFollowers from "../pages/MyFollowers";
+
 import { Routes, Route } from "react-router-dom";
 import { Outlet, useLocation } from "react-router-dom";
 
@@ -48,6 +50,8 @@ export default function Layout() {
           <Routes>
             <Route path="/" element={<Feed profile={profile} />} />
             <Route path="/my-network" element={<Network />} />
+            <Route path="/my" element={<MyFollowers />} />
+
           </Routes>
         </div>
 

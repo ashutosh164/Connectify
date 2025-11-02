@@ -17,6 +17,7 @@ urlpatterns = [
     path('my-invite/', views.invites_received_view, name='my-invites-view'),
     path('my-invite/reject/', views.reject_invitation, name='reject'),
     path('my-invite/accept/', views.accept_invitation, name='accept'),
+    path('my-followers/', views.get_my_followers, name='my-followers'),
 
 ]
 

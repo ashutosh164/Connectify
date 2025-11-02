@@ -1,10 +1,9 @@
-from django.shortcuts import render, get_object_or_404
-from rest_framework import viewsets, status
+from django.shortcuts import get_object_or_404
+from rest_framework import viewsets
 
 from rest_framework.decorators import action
-from rest_framework.views import APIView
+from rest_framework.pagination import PageNumberPagination
 
-from .serializers import *
 from rest_framework.authentication import TokenAuthentication
 from .models import *
 from .serializers import ProfileSerializer
@@ -69,8 +68,6 @@ class ProfileViewSet(viewsets.ModelViewSet):
 #             return Response(serializer.data, status=status.HTTP_200_OK)
 #         except Exception as ex:
 #             return Response({'success':f'{ex}'}, status=status.HTTP_204_NO_CONTENT)
-
-
 
 
 @api_view(['POST'])
@@ -164,7 +161,6 @@ def invite_profile_list_view(request):
     user = request.user
     qs = Profiles.objects.get_all_profiles_to_invite(user)
     serializer = ProfileSerializer(qs, many=True, context={'request': request})
-
     return Response( serializer.data, status=status.HTTP_200_OK)
 
 
@@ -179,6 +175,25 @@ def invites_received_view(request):
         is_empty = True
     serializer = ProfileSerializer(results, many=True, context={'request': request})
     return Response({'is_empty':is_empty, 'data': serializer.data}, status=status.HTTP_200_OK)
+
+
+class FollowersPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 50
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_my_followers(request):
+    my_profile = Profiles.objects.get(user=request.user)
+    connected_profiles = Profiles.objects.filter(Q(sender__receiver=my_profile, sender__status="accepted") | Q(receiver__sender=my_profile, receiver__status="accepted")).distinct()
+    paginator = FollowersPagination()
+    result_page = paginator.paginate_queryset(connected_profiles, request)
+    serializer = ProfileSerializer(result_page, many=True, context={"request": request})
+
+    return paginator.get_paginated_response(serializer.data)
+
 
 
 
