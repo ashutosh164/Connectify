@@ -188,6 +188,7 @@ class FollowersPagination(PageNumberPagination):
 def get_my_followers(request):
     my_profile = Profiles.objects.get(user=request.user)
     connected_profiles = Profiles.objects.filter(Q(sender__receiver=my_profile, sender__status="accepted") | Q(receiver__sender=my_profile, receiver__status="accepted")).distinct()
+    # connected_profiles = Relationship.objects.filter(Q(sender=my_profile, status="accepted") | Q(receiver=my_profile, status="accepted")).distinct()
     paginator = FollowersPagination()
     result_page = paginator.paginate_queryset(connected_profiles, request)
     serializer = ProfileSerializer(result_page, many=True, context={"request": request})

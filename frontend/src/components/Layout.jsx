@@ -38,7 +38,6 @@ export default function Layout() {
   return (
     <div className="h-screen flex flex-col">
       <Header onNavigate={setActivePage} />
-
       <div className="flex flex-1 pt-14 gap-3 bg-green-500/10">
         <div className="w-1/4 p-4 hidden sm:block">
           <div className="fixed w-1/4">
@@ -51,7 +50,6 @@ export default function Layout() {
             <Route path="/" element={<Feed profile={profile} />} />
             <Route path="/my-network" element={<Network />} />
             <Route path="/my" element={<MyFollowers />} />
-
           </Routes>
         </div>
 

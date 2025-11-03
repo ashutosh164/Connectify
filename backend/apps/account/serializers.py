@@ -1,5 +1,6 @@
+from django.db.models import Q
 from rest_framework import serializers
-from .models import Profiles
+from .models import Profiles, Relationship
 from django.contrib.auth.models import User
 
 
@@ -8,6 +9,11 @@ class ProfileSerializer(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField()
     is_following = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
+    total_followers = serializers.SerializerMethodField()
+
+    def get_total_followers(self, obj):
+        return Relationship.objects.filter(Q(sender=obj, status='accepted') | Q(receiver=obj, status='accepted')).count()
+        # return Profiles.objects.filter(following=obj.user).count()
 
     def get_image(self, obj):
         request = self.context.get('request')
@@ -34,7 +40,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profiles
         # fields = '__all__'
         fields = ['username', 'full_name', 'is_following',
-                  'bio', 'image', 'id', 'role', 'about']
+                  'bio', 'image', 'id', 'role', 'about', 'total_followers']
 
 
 class CurrentUserProfileSerializer(serializers.ModelSerializer):
@@ -51,8 +57,13 @@ class CurrentUserProfileSerializer(serializers.ModelSerializer):
     #         return request.build_absolute_uri(obj.image.url)
     #     return None
 
+    # def get_total_followers(self, obj):
+    #     return obj.following.all().count()
+
+
     def get_total_followers(self, obj):
-        return obj.following.all().count()
+        return Profiles.objects.filter(following=obj.user).count()
+
 
     class Meta:
         model = Profiles
