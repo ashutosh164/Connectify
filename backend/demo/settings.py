@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     # 'django.contrib.auth',
     'django_filters',
+    'channels',
+    'apps.chat',
 
 ]
 CORS_ALLOW_ALL_ORIGINS = True
@@ -77,6 +79,15 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'demo.wsgi.application'
+
+# Channels
+# ASGI_APPLICATION = 'chatserver.asgi.application'
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': { 'hosts': [('127.0.0.1', 6379)] },
+#     }
+# }
 
 
 # Database

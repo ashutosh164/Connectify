@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import Network from "../pages/NetworkPage";
 import MyFollowers from "../pages/MyFollowers";
+import Chat from "./Chats"
 
 import { Routes, Route } from "react-router-dom";
 import { Outlet, useLocation } from "react-router-dom";
@@ -50,6 +51,7 @@ export default function Layout() {
             <Route path="/" element={<Feed profile={profile} />} />
             <Route path="/my-network" element={<Network />} />
             <Route path="/my" element={<MyFollowers />} />
+            <Route path="/chat" element={<Chat conversationId={1} />} />
           </Routes>
         </div>
 
