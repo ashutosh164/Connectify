@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-# from apps.account.models import Profiles
+
+
 STATUS_CHOICES = (
     ('public', 'public'),
     ('friend', 'friend'),

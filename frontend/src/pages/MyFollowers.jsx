@@ -60,9 +60,10 @@ export default function MyFollower() {
                 </div>
 
                 {!person.accepted ? (
-                    <div className="flex justify-between gap-2 ">
-                       
-                    </div>
+                    <div className="flex justify-between px-3 py-1 rounded-full bg-green-500/10 text-green-500 text-xs font-medium cursor-pointer hover:bg-green-500/20 ">
+                         <Link to="/chat">Message</Link>
+                        
+                        </div>
                 ) : (
                 <span className="text-green-600 text-sm font-medium">Connected</span>
                 )}

@@ -1,66 +1,103 @@
-// Chat.js
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useState, useRef } from "react";
 
-export default function Chat({ conversationId }) {
+function Chat({ conversationId }) {
   const [messages, setMessages] = useState([]);
-  const [text, setText] = useState('');
+  const [inputMessage, setInputMessage] = useState("");
   const wsRef = useRef(null);
 
   useEffect(() => {
-    // fetch last messages (REST)
-    fetch(`/api/conversations/${conversationId}/messages/`, { credentials: 'include' })
-      .then(res => res.json())
-      .then(data => {
-        // if using DRF ListAPIView without pagination it returns list
-        setMessages(Array.isArray(data) ? data.reverse() : []);
-      });
+    if (!conversationId) return;
 
-    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-    const wsUrl = `${protocol}://${window.location.host}/ws/chat/${conversationId}/`;
-    const ws = new WebSocket(wsUrl);
-    wsRef.current = ws;
+    const wsUrl = `ws://localhost:8000/ws/chat/${conversationId}/`;
 
-    ws.onopen = () => console.log('ws open');
-    ws.onmessage = (e) => {
-      const data = JSON.parse(e.data);
-      if (data.type === 'message.received') {
-        setMessages(prev => [...prev, data.message]);
-      }
+    // Create WebSocket connection
+    const socket = new WebSocket(wsUrl);
+    wsRef.current = socket;
+
+    socket.onopen = () => {
+      console.log("WebSocket connected");
     };
-    ws.onclose = () => console.log('ws closed');
+
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      setMessages((prev) => [...prev, data.message]);
+    };
+
+    socket.onclose = () => {
+      console.log("WebSocket closed");
+    };
+
+    socket.onerror = (err) => {
+      console.error("WebSocket error:", err);
+    };
 
     return () => {
-      ws.close();
+      socket.close();
     };
   }, [conversationId]);
 
+
+  // Send message
   const sendMessage = () => {
-    if (!text.trim()) return;
-    const payload = { type: 'message.create', content: text.trim() };
-    wsRef.current.send(JSON.stringify(payload));
-    setText('');
+    if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) {
+      alert("WebSocket not connected!");
+      return;
+    }
+    if (!inputMessage.trim()) return;
+
+    wsRef.current.send(
+      JSON.stringify({
+        message: inputMessage,
+      })
+    );
+
+    setInputMessage("");
   };
 
+
   return (
-    <div style={{border:'1px solid #ccc', padding:12, width:400}}>
-      <div style={{height:300, overflowY:'auto', marginBottom:8}}>
-        {messages.map(m => (
-          <div key={m.id} style={{marginBottom:8}}>
-            <b>{m.sender && m.sender.username ? m.sender.username : m.sender_username}</b>: {m.content}
-            <div style={{fontSize:10, color:'#888'}}>{new Date(m.created_at).toLocaleString()}</div>
-          </div>
+    <div style={{ padding: "20px", width: "400px", border: "1px solid #ddd" }}>
+      <h2>Live Chat</h2>
+
+      <div
+        style={{
+          height: "300px",
+          overflowY: "scroll",
+          border: "1px solid #ccc",
+          padding: "10px",
+          marginBottom: "10px",
+        }}
+      >
+        {messages.map((msg, idx) => (
+          <p key={idx} style={{ padding: "5px", background: "#f5f5f5" }}>
+            {msg}
+          </p>
         ))}
       </div>
 
-      <div style={{display:'flex', gap:8}}>
-        <input
-          value={text}
-          onChange={e => setText(e.target.value)}
-          style={{flex:1}}
-          onKeyDown={e => e.key === 'Enter' ? sendMessage() : null}
-        />
-        <button onClick={sendMessage}>Send</button>
-      </div>
+      {/* ⛔ The issue was usually here: input disabled */}
+      <input
+        type="text"
+        placeholder="Type a message..."
+        value={inputMessage}
+        onChange={(e) => setInputMessage(e.target.value)}
+        style={{ width: "75%", padding: "8px" }}
+      />
+
+      <button
+        onClick={sendMessage}
+        style={{
+          padding: "8px 12px",
+          marginLeft: "5px",
+          background: "blue",
+          color: "white",
+          border: "none",
+        }}
+      >
+        Send
+      </button>
     </div>
   );
 }
+
+export default Chat;
