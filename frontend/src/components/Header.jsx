@@ -42,9 +42,9 @@ export default function Header() {
           <UsersIcon className="w-6 h-6" />
           <span className="hidden sm:inline text-sm font-medium">My Network</span>
         </Link>
-              <Link to="/chat" className="flex items-center gap-1 text-gray-700 hover:text-green-600 transition">
+              {/* <Link to="/chat" className="flex items-center gap-1 text-gray-700 hover:text-green-600 transition">
           <span className="hidden sm:inline text-sm font-medium">Chat</span>
-        </Link>
+        </Link> */}
       </div>
     </header>
   );

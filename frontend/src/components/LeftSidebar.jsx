@@ -8,7 +8,7 @@ export default function LeftSidebar({profile}) {
 
   const handleLogout = async () => {
     try {
-      const response = await api.get("/logout/")
+      const response = await api.get("/api/logout/")
 
       if (response.status === 200) {
            localStorage.removeItem("user");
@@ -57,7 +57,7 @@ export default function LeftSidebar({profile}) {
       </div>
 
       <div className='bg-white shadow rounded-lg mt-2 p-6'>
-             <div className="flex items-center justify-between space-x-3">
+             {/* <div className="flex items-center justify-between space-x-3">
                 <h3 className="truncate text-sm font-medium ">Profile view</h3>
                 <span className="inline-flex shrink-0 items-center rounded-full  px-1.5 py-0.5 text-xs font-medium text-green-500 inset-ring inset-ring-green-500/10">
                   33
@@ -68,7 +68,7 @@ export default function LeftSidebar({profile}) {
                 <span className="inline-flex shrink-0 items-center rounded-full  px-1.5 py-0.5 text-xs font-medium text-green-500 inset-ring inset-ring-green-500/10">
                   33
                 </span>
-              </div>
+              </div> */}
 
               <div className="flex mt-2 justify-between items-center space-x-3">
                 <h3 className="truncate text-sm font-medium ">Follower</h3>

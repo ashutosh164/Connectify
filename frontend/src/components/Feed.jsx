@@ -47,7 +47,7 @@ export default function Feed({profile}) {
   setLoading(true);
 
   try {
-    let url = `/posts/?page=${pageNum}`;
+    let url = `api/posts/?page=${pageNum}`;
     let allPosts = [];
     let response = null;
 
@@ -85,6 +85,10 @@ export default function Feed({profile}) {
 
   // Initial fetch
   useEffect(() => {
+         if (!user || !user.token) {
+              navigate("/login");
+              return;
+          }
     fetchPosts(1, false);
   }, []);
 

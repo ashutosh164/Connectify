@@ -16,7 +16,7 @@ export default function CreatePost({ user, onPostCreated, profile }) {
 
     if (image) formData.append("image", image);
 
-    api.post("/posts/", formData, {
+    api.post("/api/posts/", formData, {
       headers: { "Content-Type": "multipart/form-data", Authorization: `Token ${user.token}` },
     }).then(() => {
       setNewPost("");

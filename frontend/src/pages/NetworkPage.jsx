@@ -17,7 +17,7 @@ export default function Network() {
   function getInviteList() {
     setLoading(true); // ✅ Show loader before fetching
 
-    api.get("/my-invite/", {
+    api.get("/api/my-invite/", {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Token ${user.token}`,
@@ -36,7 +36,7 @@ export default function Network() {
     formData.append("profile_id", senderId);
 
     try {
-      await api.post("/my-invite/accept/", formData, {
+      await api.post("/api/my-invite/accept/", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Token ${user.token}`,
@@ -57,7 +57,7 @@ export default function Network() {
     formData.append("profile_id", senderId);
 
     try {
-      await api.post("/my-invite/reject/", formData, {
+      await api.post("/api/my-invite/reject/", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Token ${user.token}`,

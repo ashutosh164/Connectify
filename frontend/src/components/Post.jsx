@@ -18,7 +18,7 @@ export default function Post({ post, user,pageNum, fetchPosts, profile }) {
 //     formData.append("post", post.id);
 //     formData.append("user", user.user_id);
 
-//     api.post("/like/", formData, {
+//     api.post("/api/like/", formData, {
 //       headers: { "Content-Type": "multipart/form-data", Authorization: `Token ${user.token}` },
 //     })
 //     // .then(() => fetchPosts());
@@ -67,7 +67,7 @@ export default function Post({ post, user,pageNum, fetchPosts, profile }) {
     formData.append("user", user.user_id);
 
     try {
-      const res = await api.post("/like/", formData, {
+      const res = await api.post("/api/like/", formData, {
         headers: { "Content-Type": "multipart/form-data", Authorization: `Token ${user.token}` },
       });
 
@@ -112,7 +112,7 @@ export default function Post({ post, user,pageNum, fetchPosts, profile }) {
 //     formData.append("user", user.user_id);
 //     formData.append("body", newComment);
 
-//     api.post("/comment/", formData, {
+//     api.post("/api/comment/", formData, {
 //       headers: { "Content-Type": "multipart/form-data", Authorization: `Token ${user.token}` },
 //     }).then(() => {
 //       setNewComment(""); // clear input
@@ -167,7 +167,7 @@ export default function Post({ post, user,pageNum, fetchPosts, profile }) {
     formData.append("body", tempComment.body);
 
     try {
-      const res = await api.post("/comment/", formData, {
+      const res = await api.post("/api/comment/", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Token ${user.token}`,
@@ -205,7 +205,7 @@ export default function Post({ post, user,pageNum, fetchPosts, profile }) {
 
 const handleDeleteComment = async (commentId) => {
   try {
-    await api.delete(`/comment/${commentId}/`, {
+    await api.delete(`/api/comment/${commentId}/`, {
       headers: { Authorization: `Token ${user.token}` },
     });
     // remove the comment from local state instead of fetching all posts

@@ -1,14 +1,22 @@
 import { useState, useEffect } from "react";
 import api from "../api";
 import { useAuth } from "../AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function RightSidebar() {
+    const navigate = useNavigate();
+
     const { user } = useAuth();
     const [profile, setProfile] = useState([]);
     const [status, setStatus] = useState({}); // { id: 'idle' | 'loading' | 'Pending' }
 
   useEffect(() => {
-    api.get("/profiles/exclude-me/",{
+
+         if (!user || !user.token) {
+    navigate("/login");
+    return;
+  }
+    api.get("/api/profiles/exclude-me/",{
       headers: { "Content-Type": "multipart/form-data", Authorization: `Token ${user.token}` },
     })
       .then((res) => {
@@ -22,9 +30,9 @@ export default function RightSidebar() {
   //   setStatus((prev) => ({ ...prev, [id]: "loading" }));
 
   //   try {
-  //     // await api.post("/send-invite/", { profile_id: id },{
+  //     // await api.post("/api/send-invite/", { profile_id: id },{
 
-  //     await api.post("/follow/", { profile_id: id },{
+  //     await api.post("/api/follow/", { profile_id: id },{
   //     headers: { "Content-Type": "multipart/form-data", Authorization: `Token ${user.token}` },
   //   })
   // .then(res => {
@@ -45,7 +53,7 @@ export default function RightSidebar() {
   // };
 
   function getInviteList() {
-     api.get("/invite-profile-list/",{
+     api.get("/api/invite-profile-list/",{
       headers: { "Content-Type": "multipart/form-data", Authorization: `Token ${user.token}` },
     })
       .then((res) => {
@@ -59,7 +67,7 @@ export default function RightSidebar() {
     setStatus((prev) => ({ ...prev, [id]: "loading" }));
 
     try {
-      await api.post("/send-invite/", { profile_id: id },{
+      await api.post("/api/send-invite/", { profile_id: id },{
 
       headers: { "Content-Type": "multipart/form-data", Authorization: `Token ${user.token}` },
     })

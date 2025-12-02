@@ -23,7 +23,12 @@ export default function Layout() {
 
 
   useEffect(() => {
-    api.get("/profiles/me/", {
+
+     if (!user || !user.token) {
+    navigate("/login");
+    return;
+  }
+    api.get("/api/profiles/me/", {
       headers: { "Content-Type": "multipart/form-data", Authorization: `Token ${user.token}` },
     })
       .then((res) =>{

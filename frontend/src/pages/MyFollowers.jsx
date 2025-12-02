@@ -13,7 +13,7 @@ export default function MyFollower() {
   }, [location.key]);
 
   function getFolloerList () {
-        api.get("/my-followers/", {
+        api.get("/api/my-followers/", {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Token ${user.token}`,
