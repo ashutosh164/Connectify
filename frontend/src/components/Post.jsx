@@ -267,7 +267,7 @@ const handleRepost = async (postId) => {
 
       {/* Post Content */}
       <p className="mt-3">{post.title}</p>
-      {post.image && <img src={post.image} alt="post" className="mt-2 rounded-lg max-h-80 w-full object-cover" />}
+      {post.image && <img src={post.image} alt="post" className="mt-2 rounded-lg w-full object-cover" />}
 
       {/* Actions */}
       <div className="flex justify-between mt-5 text-sm text-gray-600">
