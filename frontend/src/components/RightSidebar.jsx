@@ -8,7 +8,7 @@ export default function RightSidebar() {
 
     const { user } = useAuth();
     const [profile, setProfile] = useState([]);
-    const [status, setStatus] = useState({}); // { id: 'idle' | 'loading' | 'Pending' }
+    const [status, setStatus] = useState({}); 
 
   useEffect(() => {
 
@@ -81,9 +81,10 @@ export default function RightSidebar() {
     } else if(res.data.action === 'followed') {
       setStatus((prev) => ({ ...prev, [id]: "Connected" }));
       console.log('followed=====>>>', status)
-
-
     }
+    // if (res.data.status === 200) {
+    //   setStatus((prev) => ({ ...prev, [id]: "Pending" }));
+    // }
   });
     } catch (err) {
       console.error("Error sending connection:", err);
@@ -91,42 +92,72 @@ export default function RightSidebar() {
   };
 
   return (
+
     <div>
-      <h3 className="mb-3 text-sm font-medium">People you may know</h3>
+    <div className="bg-white shadow rounded-lg p-4 h-[50vh] flex flex-col">
+
+  {/* SCROLLABLE CONTENT */}
+  <div className="flex-1 overflow-y-auto">
+    <h2 className="font-bold mb-2">Recently Online Experts</h2>
     {profile && profile.length > 0 ? (
-  profile.map((person) => (
-    <div key={person.id} className="relative bg-white shadow rounded-lg lg:flex md:block items-center space-x-3 border border-white/10 px-6 py-5 hover:border-white/25 mb-2">
-      <div className="shrink-0">
-        <img
-          alt={person.full_name || person.username}
-          src={person.image || "/default.png"}  // fallback image
-          className="h-10 w-10 rounded-full"
-        />
-      </div>
-      <div className="min-w-0 flex-1">
-        <p className="text-sm font-medium">{person.full_name || person.username}</p>
-        <p className="truncate text-sm text-gray-400">
-          {person.role || "Software developer"}
-        </p>
-      </div>
-      <div onClick={() => sendConnection(person.id)} className="flex items-center cursor-pointer space-x-2">
-        {status[person.id] === "loading" ? (
-          <div className="w-6 h-6 border-4 border-green-500 border-dashed rounded-full animate-spin"></div>
-        ) : status[person.id] === "Connected" ? (
-          <span className="px-3 py-1 rounded-full bg-green-500/10 text-green-500 text-xs font-medium">Connected</span>
-        ) : status[person.id] === "Connect" ? (
-          <span className="px-3 py-1 rounded-full bg-green-500/10 text-green-500 text-xs font-medium">Connect</span>
-        ) : (
-          <span className="px-3 py-1 rounded-full bg-green-500/10 text-green-500 text-xs font-medium cursor-pointer hover:bg-green-500/20">
-            {person.is_following ? "Connected" : "Connect"}
-          </span>
-        )}
-      </div>
-    </div>
-  ))
+      profile.map((person) => (
+        <div
+          key={person.id}
+          className="lg:flex md:block items-center space-x-3 mb-2"
+        >
+          <div className="shrink-0">
+            <img
+              alt={person.full_name || person.username}
+              src={person.image || "/default.png"}
+              className="h-10 w-10 rounded-full"
+            />
+          </div>
+
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-medium">
+              {person.full_name || person.username}
+            </p>
+            <p className="truncate text-sm text-gray-400">
+              {person.role || "Software developer"}
+            </p>
+          </div>
+
+          <div
+            onClick={() => sendConnection(person.id)}
+            className="flex items-center cursor-pointer space-x-2"
+          >
+            {status[person.id] === "loading" ? (
+              <div className="w-6 h-6 border-4 border-green-500 border-dashed rounded-full animate-spin"></div>
+            ) : (
+              <span className="px-3 py-1 rounded-full bg-green-500/10 text-green-500 text-xs font-medium hover:bg-green-500/20">
+                {person.is_following ? "Connected" : "Connect"}
+              </span>
+            )}
+          </div>
+        </div>
+      ))
     ) : (
       <p className="text-center text-gray-400 py-4">No profiles found.</p>
     )}
+  </div>
+
+  {/* BUTTON AT BOTTOM CENTER */}
+  <button type="button" className="mt-auto mx-auto w-full rounded-full bg-green-500 px-4 py-2 text-xs font-semibold text-white shadow hover:bg-green-600">View all</button>
+
+</div>
+
+
+      {/* <div className="bg-white shadow rounded-lg mt-2 p-4 h-[30vh]"> */}
+        <h3 className="mb-3 text-sm font-medium">Only for Add</h3>
+
+      {/* </div> */}
+
+
+
+
+
+
+
 
     </div>
   );

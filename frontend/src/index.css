@@ -40,3 +40,24 @@
 .custom-scrollbar:active::-webkit-scrollbar-thumb {
   opacity: 1;
 }
+
+
+.custom-scrollbar {
+  overflow-y: auto;
+  scrollbar-width: none;      /* Firefox */
+  -ms-overflow-style: none;   /* IE / Edge */
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  display: none;              /* Chrome / Safari */
+}
+html, body {
+  overflow: auto;
+  scrollbar-width: none;      /* Firefox */
+  -ms-overflow-style: none;   /* IE / Edge */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;              /* Chrome / Safari */
+}

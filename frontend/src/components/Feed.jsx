@@ -115,9 +115,11 @@ export default function Feed({profile}) {
   }, [handleScroll]);
 
   return (
-    <div className="flex-1 p-4 overflow-y-auto custom-scrollbar" ref={feedContainerRef} style={{ maxHeight: "calc(100vh - 56px)" }}>
+    <div className="flex-1 p-4">
+    <CreatePost  profile={profile} user={user} onPostCreated={() => fetchPosts(page, false)} />
+
+    <div className=" overflow-y-auto custom-scrollbar" ref={feedContainerRef} style={{ maxHeight: "calc(100vh - 56px)" }}>
       {/* Create Post Section */}
-      <CreatePost profile={profile} user={user} onPostCreated={() => fetchPosts(page, false)} />
 
       {/* Posts Feed */}
       {posts.map((post) => (
@@ -128,6 +130,7 @@ export default function Feed({profile}) {
       {/* Loader */}
       {loading && <p className="text-center text-gray-500">Loading...</p>}
       {!hasMore && <p className="text-center text-gray-400">No more posts</p>}
+    </div>
     </div>
   );
 }

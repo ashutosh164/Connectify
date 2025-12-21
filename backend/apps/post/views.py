@@ -30,7 +30,7 @@ class PostView(viewsets.ModelViewSet):
 
     @action(detail=True, methods=["post"])
     def repost(self, request, pk=None):
-        post = self.get_object()  # original post
+        post = self.get_object()
         repost = Posts.objects.create(
             title=post.title,
             image=post.image,
@@ -39,8 +39,7 @@ class PostView(viewsets.ModelViewSet):
             original_post=post
         )
 
-        # Update total repost count of the original post
-        post.total_repost = post.reposts.count()  # 'reposts' is the related_name
+        post.total_repost = post.reposts.count()
         post.save(update_fields=['total_repost'])
 
         serializer = PostSerializer(repost, context={"request": request})

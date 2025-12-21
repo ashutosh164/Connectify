@@ -44,14 +44,46 @@ export default function Layout() {
   return (
     <div className="h-screen flex flex-col">
       <Header onNavigate={setActivePage} />
+
       <div className="flex flex-1 pt-14 gap-3 bg-green-500/10">
-        <div className="w-1/4 p-4 hidden sm:block">
+
+  {/* LEFT SIDEBAR (SMALLER) */}
+  <div className="hidden sm:block w-[18%] p-4">
+    <div className="fixed w-[18%]">
+      <LeftSidebar profile={profile} />
+    </div>
+  </div>
+
+  {/* MIDDLE / FEED (WIDER) */}
+  <div className="flex-1 px-2">
+    <Routes>
+      <Route path="/" element={<Feed profile={profile} />} />
+      <Route path="/my-network" element={<Network />} />
+      <Route path="/my" element={<MyFollowers />} />
+      <Route path="/chat" element={<Chat conversationId={1} />} />
+    </Routes>
+  </div>
+
+  {/* RIGHT SIDEBAR (UNCHANGED) */}
+  <div className="hidden md:block w-1/4 p-4">
+    <div className="fixed right-3 w-1/4">
+      <RightSidebar />
+    </div>
+  </div>
+
+</div>
+
+
+
+      {/* <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-6 pt-14 gap-3 bg-green-500/10 ">
+
+        <div className="col-span-1 p-4 hidden sm:block">
           <div className="fixed w-1/4">
             <LeftSidebar profile={profile} />
           </div>
         </div>
 
-        <div className="flex-1">
+        <div className="col-span-3">
           <Routes>
             <Route path="/" element={<Feed profile={profile} />} />
             <Route path="/my-network" element={<Network />} />
@@ -60,12 +92,15 @@ export default function Layout() {
           </Routes>
         </div>
 
-        <div className="w-1/4 p-4 hidden md:block">
+        <div className="col-span-2 p-4 hidden md:block">
           <div className="fixed right-3 w-1/4">
             <RightSidebar />
           </div>
         </div>
-      </div>
+      </div> */}
+
+
+
     </div>
   );
 }
