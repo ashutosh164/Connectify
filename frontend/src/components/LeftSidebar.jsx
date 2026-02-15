@@ -75,17 +75,17 @@ export default function LeftSidebar({profile}) {
       
     </div>
     <div>
-      <div class="px-4 flex py-2 ">
+      <div class=" flex py-2 ">
         <div class="cursor-pointer flex-1 hover:bg-green-500/20 min-w-0 rounded-lg">
           <p class="flex font-medium items-center justify-center text-sm">0</p>
-          <p class="flex font-medium items-center justify-center text-sm text-xs/6">Followers</p></div>
+          <p class="flex font-medium items-center justify-center text-sm text-[0.625rem]">Followers</p></div>
         <div class="cursor-pointer flex-1 hover:bg-green-500/20 min-w-0 rounded-lg">
           <p class="flex font-medium items-center justify-center text-sm">0</p>
-          <p class="flex font-medium items-center justify-center text-sm text-xs/6">Following</p>
+          <p class="flex font-medium items-center justify-center text-sm text-[0.625rem]">Following</p>
         </div>
           <div class="cursor-pointer flex-1 hover:bg-green-500/20 min-w-0 rounded-lg">
           <p class="flex font-medium items-center justify-center text-sm">0</p>
-          <p class="flex font-medium items-center justify-center text-sm text-xs/6">Balance</p>
+          <p class="flex font-medium items-center justify-center text-sm text-[0.625rem]">Balance</p>
         </div>
       </div>
     </div>

@@ -259,14 +259,14 @@ const handleRepost = async (postId) => {
     <div className="bg-white shadow p-4 rounded-lg mb-4">
       <div className="flex items-center gap-4">
         <img src={post.author_profile?.image} className="h-12 w-12 rounded-full" alt="" />
-        <div>
-          <h3 className="text-sm font-medium">{capitalizeFirstLetter(post.user_name)}</h3>
+        <div className="cursor-pointer">
+          <h3 className="text-sm font-medium ">{capitalizeFirstLetter(post.user_name)}</h3>
           <p className="text-xs text-gray-400">{formatDate(post.created_on)}</p>
         </div>
       </div>
 
       {/* Post Content */}
-      <p className="mt-3">{post.title}</p>
+      <p className="mt-3 cursor-pointer">{post.title}</p>
       {post.image && <img src={post.image} alt="post" className="mt-2 rounded-lg w-full object-cover" />}
 
       {/* Actions */}

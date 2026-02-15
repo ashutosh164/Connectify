@@ -16,7 +16,12 @@ export default function RightSidebar() {
     navigate("/login");
     return;
   }
-    api.get("/api/profiles/exclude-me/",{
+  getAllUserList()
+
+  }, []);
+
+  function getAllUserList() {
+        api.get("/api/profiles/exclude-me/",{
       headers: { "Content-Type": "multipart/form-data", Authorization: `Token ${user.token}` },
     })
       .then((res) => {
@@ -24,7 +29,7 @@ export default function RightSidebar() {
         setProfile(res.data.results);
       })
       .catch((err) => console.error("Error fetching profiles:", err));
-  }, []);
+  }
 
   // const sendConnection = async (id) => {
   //   setStatus((prev) => ({ ...prev, [id]: "loading" }));
@@ -73,7 +78,8 @@ export default function RightSidebar() {
     })
   .then(res => {
     console.log(res)
-    getInviteList()
+    // getInviteList()
+    getAllUserList()
     if (res.data.action === 'unfollowed') {
         setStatus((prev) => ({ ...prev, [id]: "Connect" }));
         console.log('unfollowed=====>>>', status)
