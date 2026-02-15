@@ -60,7 +60,7 @@ export default function Layout() {
       <Route path="/" element={<Feed profile={profile} />} />
       <Route path="/my-network" element={<Network />} />
       <Route path="/my" element={<MyFollowers />} />
-      <Route path="/chat" element={<Chat conversationId={1} />} />
+      <Route path="/chat" element={<Chat username={user.user_id} />} />
     </Routes>
   </div>
 

@@ -2,12 +2,11 @@ from rest_framework import serializers
 from .models import Posts, Like, Comment
 # from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
-from django.db.models import Q
+
 User = get_user_model()
 from apps.account.models import Profiles
-from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
-from ..account.serializers import ProfileSerializer, CurrentUserProfileSerializer
+from ..account.serializers import ProfileSerializer
 
 
 class RegisterSerializer(serializers.ModelSerializer):

@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import api from "../api";
 import { useAuth } from "../AuthContext";
 import { Link } from "react-router-dom";
-
+import { Routes, Route } from "react-router-dom";
+import Chat from "../components/Chats";
 
 export default function MyFollower() {
   const { user } = useAuth();
@@ -62,6 +63,13 @@ export default function MyFollower() {
                 {!person.accepted ? (
                     <div className="flex justify-between px-3 py-1 rounded-full bg-green-500/10 text-green-500 text-xs font-medium cursor-pointer hover:bg-green-500/20 ">
                          <Link to="/chat">Message</Link>
+
+                         {/* <Routes>
+  <Route
+    path="/chat"
+    element={<Chat username={user.user_id} />}
+  /> message
+</Routes> */}
                         
                         </div>
                 ) : (
